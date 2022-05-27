@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'application'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+}
+
+group 'wf.wolfram'
+version '0.1.0-a.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.6.19'
+    implementation "com.typesafe.akka:akka-stream_2.13:2.5.32"
+
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    implementation project(':api')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+mainClassName = "wf.wolfram.bootstrap.Wolfram"
+
+run {
+    standardInput = System.in
+}
+
+shadowJar {
+    append 'reference.conf'
+    append 'version.conf'
+    with jar
+}
+
+test {
+    useJUnitPlatform()
+}
